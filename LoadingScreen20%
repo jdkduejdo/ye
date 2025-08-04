@@ -1,0 +1,115 @@
+local Players = game:GetService("Players")
+local StarterGui = game:GetService("StarterGui")
+local SoundService = game:GetService("SoundService")
+local player = Players.LocalPlayer
+
+-- Disable UI
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+
+-- Create GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.IgnoreGuiInset = true
+screenGui.ResetOnSpawn = false
+screenGui.Name = "🌴 Grow A Garden Spawner"
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Fade Frame
+local fadeFrame = Instance.new("Frame")
+fadeFrame.Size = UDim2.new(1, 0, 1, 0)
+fadeFrame.Position = UDim2.new(0, 0, 0, 0)
+fadeFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+fadeFrame.BackgroundTransparency = 1
+fadeFrame.ZIndex = 10
+fadeFrame.Parent = screenGui
+
+-- Block Interaction
+local blocker = Instance.new("TextButton")
+blocker.Size = UDim2.new(1, 0, 1, 0)
+blocker.Position = UDim2.new(0, 0, 0, 0)
+blocker.Text = ""
+blocker.AutoButtonColor = false
+blocker.BackgroundTransparency = 1
+blocker.ZIndex = 11
+blocker.Parent = fadeFrame
+
+-- Title
+local title = Instance.new("TextLabel")
+title.Size = UDim2.new(1, 0, 0.1, 0)
+title.Position = UDim2.new(0, 0, 0.35, 0)
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.fromRGB(255, 255, 255)
+title.TextTransparency = 1
+title.Font = Enum.Font.GothamBlack
+title.TextScaled = true
+title.ZIndex = 12
+title.Text = "🌴 Grow A Garden Spawner"
+title.Parent = fadeFrame
+
+-- Loading Label
+local label = Instance.new("TextLabel")
+label.Size = UDim2.new(1, 0, 0.1, 0)
+label.Position = UDim2.new(0, 0, 0.47, 0)
+label.BackgroundTransparency = 1
+label.TextColor3 = Color3.fromRGB(255, 255, 255)
+label.TextTransparency = 1
+label.Font = Enum.Font.GothamBold
+label.TextScaled = true
+label.ZIndex = 12
+label.Text = "Initializing..."
+label.Parent = fadeFrame
+
+-- 🎵 Background Vibe Music
+local music = Instance.new("Sound")
+music.SoundId = "rbxassetid://1843239467" -- Replace with your vibe track
+music.Volume = 0.5
+music.Looped = true
+music.Playing = true
+music.Parent = SoundService
+
+-- Fade in
+for i = 1, 20 do
+	local alpha = 1 - (i / 20)
+	fadeFrame.BackgroundTransparency = alpha
+	title.TextTransparency = alpha
+	label.TextTransparency = alpha
+	wait(0.02)
+end
+
+-- Loading messages
+local messages = {
+	"📡 Fetching game data...",
+	"🔐 Authenticating player session...",
+	"📦 Mounting spawner packages...",
+	"🧠 Parsing spawn table configurations...",
+	"🛰️ Connecting to spawner host node...",
+	"🧬 Calibrating spawn logic systems...",
+	"⚙️ Compiling object spawn instructions...",
+	"🔄 Syncing entity life cycles...",
+	"🧩 Integrating environmental modifiers...",
+	"📈 Verifying spawn rate limits...",
+	"🛠️ Resolving resource dependencies...",
+	"📁 Allocating spawnpoint memory...",
+	"🚦 Engaging instance controller...",
+	"🔍 Scanning world anchors...",
+	"📊 Updating runtime spawn metrics...",
+	"✅ Spawner system ready for deployment."
+}
+
+for i, msg in ipairs(messages) do
+	label.Text = msg
+	wait(25 / #messages)
+end
+
+-- Fade out
+for i = 1, 20 do
+	local alpha = i / 20
+	fadeFrame.BackgroundTransparency = alpha
+	title.TextTransparency = alpha
+	label.TextTransparency = alpha
+	wait(0.02)
+end
+
+-- Cleanup
+screenGui:Destroy()
+music:Destroy()
+StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
